@@ -9,7 +9,7 @@ import { pageMetadata } from '@/lib/seo';
 import { colors, css } from '@/theme';
 
 export function generateMetadata() {
-  return pageMetadata('RSVP', 'Let us know whether you can join us for our wedding in Karlstad.', '/rsvp');
+  return pageMetadata('OSA', 'Låt oss veta om du kan komma på vårt bröllop i Karlstad.', '/rsvp');
 }
 
 export default function Rsvp() {
@@ -21,14 +21,14 @@ export default function Rsvp() {
           <View style={styles.innerFrame}>
             {sent ? null : (
               <View {...css('rise')} style={styles.head}>
-                <Script>Kindly reply</Script>
+                <Script>Om svar anhålles</Script>
                 <Heading level={1} size="h1" style={styles.center}>
-                  RSVP
+                  OSA
                 </Heading>
                 <Flourish />
                 <Lead style={styles.center}>{wedding.rsvp.intro}</Lead>
                 <Eyebrow style={styles.center}>
-                  Please reply by: <C v={wedding.rsvp.deadline} />
+                  OSA senast: <C v={wedding.rsvp.deadline} />
                 </Eyebrow>
               </View>
             )}

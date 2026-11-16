@@ -6,7 +6,7 @@ import { pageMetadata } from '@/lib/seo';
 import { colors, fonts } from '@/theme';
 
 export function generateMetadata() {
-  return pageMetadata('Photo credits', 'Credits for the photographs used on this site.', '/credits');
+  return pageMetadata('Fotografer', 'Upphovspersoner till fotografierna på den här webbplatsen.', '/credits');
 }
 
 const credited = Object.values(photos).filter((photo) => photo.credit);
@@ -14,13 +14,13 @@ const credited = Object.values(photos).filter((photo) => photo.credit);
 export default function Credits() {
   return (
     <View>
-      <PageHead eyebrow="With thanks" title="Photo credits" />
+      <PageHead eyebrow="Med tack" title="Fotografer" />
       <Container narrow style={styles.list}>
         {credited.map((photo) => (
           <Text key={photo.credit!.url} style={styles.row}>
             {photo.credit!.title}, {photo.credit!.author}, {photo.credit!.license}.{' '}
             <Text role="link" {...({ href: photo.credit!.url, hrefAttrs: { target: '_blank', rel: 'noopener noreferrer' } } as object)} style={styles.link}>
-              Source
+              Källa
             </Text>
           </Text>
         ))}

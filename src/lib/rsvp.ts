@@ -28,13 +28,13 @@ export type FormErrors = Partial<Record<'fullName' | 'email' | 'attending' | `gu
 
 export function validate(form: RsvpForm): FormErrors {
   const errors: FormErrors = {};
-  if (!form.fullName.trim()) errors.fullName = 'Please tell us your name.';
-  if (!form.email.trim()) errors.email = 'Please add your email address.';
-  else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) errors.email = 'That email address does not look quite right.';
-  if (form.attending === null) errors.attending = 'Please let us know if you can attend.';
+  if (!form.fullName.trim()) errors.fullName = 'Skriv ditt namn.';
+  if (!form.email.trim()) errors.email = 'Fyll i din e-postadress.';
+  else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) errors.email = 'E-postadressen ser inte riktigt rätt ut.';
+  if (form.attending === null) errors.attending = 'Berätta om du kan komma.';
   if (form.attending) {
     for (let i = 0; i < form.guestCount - 1; i++) {
-      if (!form.guestNames[i]?.trim()) errors[`guest${i}`] = 'Please add this guest’s name.';
+      if (!form.guestNames[i]?.trim()) errors[`guest${i}`] = 'Fyll i gästens namn.';
     }
   }
   return errors;

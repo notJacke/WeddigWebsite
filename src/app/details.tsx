@@ -13,22 +13,22 @@ import { pageMetadata } from '@/lib/seo';
 import { colors, css, fonts } from '@/theme';
 
 export function generateMetadata() {
-  return pageMetadata('Wedding Details', 'The schedule, addresses, maps, accommodation, dress code and everything else you need for the day.', '/details');
+  return pageMetadata('Information', 'Schema, adresser, kartor, boende, klädkod och allt annat du behöver inför dagen.', '/details');
 }
 
 const { details, venues } = wedding;
 const { ceremony, reception } = venues;
 
 const sections = [
-  { id: 'schedule', label: 'Schedule' },
-  { id: 'where', label: 'When & where' },
-  { id: 'maps', label: 'Maps' },
-  { id: 'stay', label: 'Staying over' },
-  { id: 'dress', label: 'Dress code' },
-  { id: 'more', label: 'Good to know' },
+  { id: 'schedule', label: 'Schema' },
+  { id: 'where', label: 'När & var' },
+  { id: 'maps', label: 'Kartor' },
+  { id: 'stay', label: 'Övernattning' },
+  { id: 'dress', label: 'Klädkod' },
+  { id: 'more', label: 'Bra att veta' },
 ];
 
-const placeLabel: Record<string, string> = { ceremony: 'Domkyrka', reception: 'Stadshotell', transfer: 'Travel' };
+const placeLabel: Record<string, string> = { ceremony: 'Domkyrka', reception: 'Stadshotell', transfer: 'Resa' };
 
 function jumpTo(id: string) {
   if (Platform.OS === 'web') document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -53,7 +53,7 @@ function Section({ id, letter, title, children, tint }: { id: string; letter: st
 export default function Details() {
   return (
     <View>
-      <PageHead eyebrow="Everything you need" title="Wedding Details">
+      <PageHead eyebrow="Allt du behöver veta" title="Information">
         <View role="list" style={styles.index}>
           {sections.map((section) => (
             <Pressable key={section.id} role="button" onPress={() => jumpTo(section.id)} {...css('choice')} style={styles.indexItem}>
@@ -63,7 +63,7 @@ export default function Details() {
         </View>
       </PageHead>
 
-      <Section id="schedule" letter="A" title="The day, hour by hour">
+      <Section id="schedule" letter="A" title="Dagen, timme för timme">
         <View>
           {details.schedule.map((item, index) => {
             const last = index === details.schedule.length - 1;
@@ -86,40 +86,40 @@ export default function Details() {
         </View>
       </Section>
 
-      <Section id="where" letter="B" title="When, where & how" tint>
+      <Section id="where" letter="B" title="När, var & hur" tint>
         <View style={styles.stack}>
           <Reveal>
-            <Eyebrow style={styles.ledgerHead}>The date</Eyebrow>
-            <Ledger rows={[{ label: 'Date', value: weddingDate() }]} />
+            <Eyebrow style={styles.ledgerHead}>Datum</Eyebrow>
+            <Ledger rows={[{ label: 'Datum', value: weddingDate() }]} />
           </Reveal>
           <Reveal>
-            <Eyebrow style={styles.ledgerHead}>First, the ceremony</Eyebrow>
+            <Eyebrow style={styles.ledgerHead}>Först, vigseln</Eyebrow>
             <Ledger
               rows={[
-                { label: 'Where', value: ceremony.name },
-                { label: 'Starts', value: ceremony.time },
-                { label: 'Address', value: ceremony.address },
+                { label: 'Var', value: ceremony.name },
+                { label: 'Börjar', value: ceremony.time },
+                { label: 'Adress', value: ceremony.address },
               ]}
             />
           </Reveal>
           <Reveal>
-            <Eyebrow style={styles.ledgerHead}>Then, the reception</Eyebrow>
+            <Eyebrow style={styles.ledgerHead}>Sedan, festen</Eyebrow>
             <Ledger
               rows={[
-                { label: 'Where', value: reception.name },
-                { label: 'Starts', value: reception.time },
-                { label: 'Address', value: reception.address },
+                { label: 'Var', value: reception.name },
+                { label: 'Börjar', value: reception.time },
+                { label: 'Adress', value: reception.address },
               ]}
             />
           </Reveal>
           <Reveal>
-            <Eyebrow style={styles.ledgerHead}>Getting between them</Eyebrow>
+            <Eyebrow style={styles.ledgerHead}>Mellan platserna</Eyebrow>
             <Ledger rows={[{ label: 'Transport', value: venues.transfer }]} />
           </Reveal>
         </View>
       </Section>
 
-      <Section id="maps" letter="C" title="Location & maps">
+      <Section id="maps" letter="C" title="Platser & kartor">
         <View style={styles.stack}>
           {[ceremony, reception].map((venue) => (
             <Reveal key={venue.name} style={styles.mapBlock}>
@@ -135,7 +135,7 @@ export default function Details() {
         </View>
       </Section>
 
-      <Section id="stay" letter="D" title="Staying overnight" tint>
+      <Section id="stay" letter="D" title="Övernattning" tint>
         <View style={styles.stack}>
           <Reveal>
             <CBlock v={details.stay.intro}>
@@ -149,22 +149,22 @@ export default function Details() {
               </Heading>
               <Ledger
                 rows={[
-                  { label: 'Distance', value: hotel.distance },
-                  { label: 'Room rate', value: hotel.rate },
-                  { label: 'Book by', value: hotel.deadline },
+                  { label: 'Avstånd', value: hotel.distance },
+                  { label: 'Rumspris', value: hotel.rate },
+                  { label: 'Boka senast', value: hotel.deadline },
                 ]}
               />
-              {hotel.bookingUrl ? <Btn compact variant="line" label="Book" href={hotel.bookingUrl} external /> : null}
+              {hotel.bookingUrl ? <Btn compact variant="line" label="Boka" href={hotel.bookingUrl} external /> : null}
             </Reveal>
           ))}
           <Reveal>
-            <Eyebrow style={styles.ledgerHead}>After the party</Eyebrow>
+            <Eyebrow style={styles.ledgerHead}>Efter festen</Eyebrow>
             <C v={details.stay.gettingBack} style={styles.bodySerif} />
           </Reveal>
         </View>
       </Section>
 
-      <Section id="dress" letter="E" title="Dress code">
+      <Section id="dress" letter="E" title="Klädkod">
         <View style={styles.stack}>
           <Reveal style={styles.dressText}>
             <Heading level={3} size="h3">
@@ -197,7 +197,7 @@ export default function Details() {
         </View>
       </Section>
 
-      <Section id="more" letter="F" title="Good to know" tint>
+      <Section id="more" letter="F" title="Bra att veta" tint>
         <View>
           {details.extras.map((item) => (
             <Reveal key={item.title} style={styles.extra}>

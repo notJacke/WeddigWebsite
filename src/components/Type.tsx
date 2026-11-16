@@ -60,7 +60,7 @@ export function CBlock({ v, children, center }: { v: Copy; children: ReactNode; 
   );
 }
 
-export function SampleTag({ label = 'Sample text', onDark, center }: { label?: string; onDark?: boolean; center?: boolean }) {
+export function SampleTag({ label = 'Exempeltext', onDark, center }: { label?: string; onDark?: boolean; center?: boolean }) {
   return (
     <Text {...{ dataSet: { tbcTag: '' } }} style={[styles.tag, onDark && { color: colors.goldLight }, center && { alignSelf: 'center' }]}>
       {label}

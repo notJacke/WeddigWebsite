@@ -11,7 +11,7 @@ import { pageMetadata } from '@/lib/seo';
 import { colors, css, fonts } from '@/theme';
 
 export function generateMetadata() {
-  return pageMetadata('The Venues', 'Our wedding takes place in two locations in Karlstad: Karlstads Domkyrka and Karlstads Stadshotell.', '/venues');
+  return pageMetadata('Platserna', 'Vårt bröllop äger rum på två platser i Karlstad: Karlstads Domkyrka och Karlstads Stadshotell.', '/venues');
 }
 
 const { ceremony, reception, intro, transfer } = wedding.venues;
@@ -19,7 +19,7 @@ const { ceremony, reception, intro, transfer } = wedding.venues;
 export default function Venues() {
   return (
     <View>
-      <PageHead eyebrow="One day, two places" title="The Venues">
+      <PageHead eyebrow="En dag, två platser" title="Platserna">
         <Lead style={styles.center}>{intro}</Lead>
       </PageHead>
 
@@ -28,7 +28,7 @@ export default function Venues() {
       <View style={styles.transfer}>
         <View style={styles.transferLine} />
         <Reveal style={styles.transferBody}>
-          <Eyebrow style={styles.center}>And then</Eyebrow>
+          <Eyebrow style={styles.center}>Och sedan</Eyebrow>
           <C v={transfer} style={styles.transferText} />
         </Reveal>
         <View style={styles.transferLine} />
@@ -61,9 +61,9 @@ function Ceremony() {
             <Reveal delay={200}>
               <Ledger
                 rows={[
-                  { label: 'Ceremony begins', value: ceremony.time },
-                  { label: 'Address', value: ceremony.address },
-                  { label: 'Arrival', value: ceremony.note },
+                  { label: 'Vigseln börjar', value: ceremony.time },
+                  { label: 'Adress', value: ceremony.address },
+                  { label: 'Ankomst', value: ceremony.note },
                 ]}
               />
             </Reveal>
@@ -109,14 +109,14 @@ function Reception() {
               <Ledger
                 onDark
                 rows={[
-                  { label: 'Reception begins', value: reception.time },
-                  { label: 'Address', value: reception.address },
+                  { label: 'Festen börjar', value: reception.time },
+                  { label: 'Adress', value: reception.address },
                   ...reception.schedule.map((item) => ({ label: item.what, value: item.time })),
                 ]}
               />
             </Reveal>
             <Reveal>
-              <Btn label="Full schedule" href="/details" variant="lightLine" arrow />
+              <Btn label="Hela schemat" href="/details" variant="lightLine" arrow />
             </Reveal>
           </View>
           <View {...css('fill-md')}>

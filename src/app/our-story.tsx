@@ -11,7 +11,7 @@ import { pageMetadata } from '@/lib/seo';
 import { colors, css, fonts } from '@/theme';
 
 export function generateMetadata() {
-  return pageMetadata('Our Story', 'How we met, the moments along the way, and why this day means so much to us.', '/our-story');
+  return pageMetadata('Vår historia', 'Hur vi träffades, ögonblicken på vägen och varför den här dagen betyder så mycket för oss.', '/our-story');
 }
 
 const { story } = wedding;
@@ -19,7 +19,7 @@ const { story } = wedding;
 export default function OurStory() {
   return (
     <View>
-      <PageHead eyebrow="The two of us" title={story.heading}>
+      <PageHead eyebrow="Vi två" title={story.heading}>
         <CBlock v={story.intro} center>
           <Lead style={styles.center}>{copyText(story.intro)}</Lead>
         </CBlock>
@@ -36,7 +36,7 @@ export default function OurStory() {
                 <C v={chapter.when} style={styles.when} />
               </Reveal>
               <Reveal delay={80}>
-                <Eyebrow>{`Chapter ${['I', 'II', 'III', 'IV', 'V', 'VI'][index] ?? index + 1}  ·  ${chapter.label}`}</Eyebrow>
+                <Eyebrow>{`Kapitel ${['I', 'II', 'III', 'IV', 'V', 'VI'][index] ?? index + 1}  ·  ${chapter.label}`}</Eyebrow>
               </Reveal>
               <Reveal delay={160}>
                 <Heading>
@@ -56,9 +56,9 @@ export default function OurStory() {
       <Reveal style={styles.end}>
         <Flourish />
         <Heading size="h3" style={styles.center}>
-          The next chapter is one we would love to share with you.
+          Nästa kapitel vill vi gärna dela med dig.
         </Heading>
-        <Btn label="RSVP" href="/rsvp" arrow center />
+        <Btn label="OSA" href="/rsvp" arrow center />
       </Reveal>
     </View>
   );

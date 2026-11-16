@@ -5,12 +5,12 @@ import { Body, Heading, Script } from '@/components/Type';
 export default function NotFound() {
   return (
     <View style={styles.page}>
-      <Script>Oh dear</Script>
+      <Script>Hoppsan</Script>
       <Heading level={1} style={styles.center}>
-        We can’t find that page
+        Vi hittar inte den sidan
       </Heading>
-      <Body style={styles.center}>Let’s get you back to the celebration.</Body>
-      <Btn label="Back to home" href="/" arrow center />
+      <Body style={styles.center}>Vi hjälper dig tillbaka till firandet.</Body>
+      <Btn label="Till startsidan" href="/" arrow center />
     </View>
   );
 }

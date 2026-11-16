@@ -7,10 +7,10 @@ import { CloseIcon, MenuIcon } from './Art';
 import { Btn } from './Btn';
 
 export const navItems: { label: string; href: Href }[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Our Story', href: '/our-story' },
-  { label: 'The Venues', href: '/venues' },
-  { label: 'Wedding Details', href: '/details' },
+  { label: 'Hem', href: '/' },
+  { label: 'Vår historia', href: '/our-story' },
+  { label: 'Platserna', href: '/venues' },
+  { label: 'Information', href: '/details' },
 ];
 
 const fixed = (Platform.OS === 'web' ? { position: 'fixed' } : { position: 'absolute' }) as unknown as ViewStyle;
@@ -67,11 +67,11 @@ export function Nav() {
     <>
       <View
         role="navigation"
-        aria-label="Main"
+        aria-label="Huvudmeny"
         {...css('nav', 'gutter')}
         style={[fixed, styles.bar, { backgroundColor: overHero ? 'transparent' : colors.ivory, borderBottomColor: overHero ? 'transparent' : colors.hairline }]}
       >
-        <Link href="/" aria-label="Home" style={[styles.monogram, { color: overHero ? colors.ivory : colors.gold }]}>
+        <Link href="/" aria-label="Hem" style={[styles.monogram, { color: overHero ? colors.ivory : colors.gold }]}>
           {monogram}
         </Link>
 
@@ -90,15 +90,15 @@ export function Nav() {
               </Link>
             );
           })}
-          <Btn label="RSVP" href="/rsvp" compact variant={overHero ? 'light' : 'solid'} />
+          <Btn label="OSA" href="/rsvp" compact variant={overHero ? 'light' : 'solid'} />
         </View>
 
         <View {...css('hide-lg')} style={styles.mobileRow}>
-          <Btn label="RSVP" href="/rsvp" compact variant={overHero ? 'light' : 'solid'} />
+          <Btn label="OSA" href="/rsvp" compact variant={overHero ? 'light' : 'solid'} />
           <Pressable
             ref={toggleRef}
             role="button"
-            aria-label="Open menu"
+            aria-label="Öppna meny"
             aria-expanded={open}
             hitSlop={12}
             onPress={() => setOpen(true)}
@@ -110,15 +110,15 @@ export function Nav() {
       </View>
 
       {open ? (
-        <View ref={menuRef} role="dialog" aria-modal aria-label="Menu" {...css('menu', 'gutter')} style={[fixed, styles.menu]}>
+        <View ref={menuRef} role="dialog" aria-modal aria-label="Meny" {...css('menu', 'gutter')} style={[fixed, styles.menu]}>
           <View style={styles.menuTop}>
             <Text style={[styles.monogram, { color: colors.gold }]}>{monogram}</Text>
-            <Pressable role="button" aria-label="Close menu" hitSlop={12} onPress={() => setOpen(false)} style={styles.iconBtn}>
+            <Pressable role="button" aria-label="Stäng meny" hitSlop={12} onPress={() => setOpen(false)} style={styles.iconBtn}>
               <CloseIcon color={colors.charcoal} />
             </Pressable>
           </View>
           <View style={styles.menuLinks}>
-            {[...navItems, { label: 'RSVP', href: '/rsvp' as Href }].map((item) => (
+            {[...navItems, { label: 'OSA', href: '/rsvp' as Href }].map((item) => (
               <Link
                 key={item.label}
                 href={item.href}

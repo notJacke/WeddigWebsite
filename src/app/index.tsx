@@ -61,8 +61,8 @@ function Hero() {
         </View>
 
         <View {...css('rise', 'd4', 'row-md')} style={styles.heroButtons}>
-          <Btn label="RSVP" href="/rsvp" variant="light" arrow center />
-          <Btn label="Explore the details" href="/details" variant="lightLine" center />
+          <Btn label="OSA" href="/rsvp" variant="light" arrow center />
+          <Btn label="Läs mer om dagen" href="/details" variant="lightLine" center />
         </View>
       </Container>
     </View>
@@ -76,7 +76,7 @@ function Welcome() {
         <View {...css('row-md', 'gap-xl-md')} style={styles.stack}>
           <View {...css('fill-md')} style={styles.welcomeText}>
             <Reveal>
-              <Eyebrow>Welcome</Eyebrow>
+              <Eyebrow>Välkommen</Eyebrow>
             </Reveal>
             <Reveal delay={100}>
               <Heading>
@@ -111,7 +111,7 @@ function CountdownBand() {
           <View style={styles.sprig}>
             <Sprig />
           </View>
-          <Eyebrow style={styles.center}>Counting down to our day</Eyebrow>
+          <Eyebrow style={styles.center}>Nedräkning till vår dag</Eyebrow>
           <Countdown />
         </Reveal>
       </Container>
@@ -128,8 +128,8 @@ function TwoPlaces() {
     <View {...css('band')} style={styles.band}>
       <Container>
         <Reveal style={styles.placesHead}>
-          <Eyebrow>One day, two places</Eyebrow>
-          <Heading style={styles.center}>From the cathedral to the celebration</Heading>
+          <Eyebrow>En dag, två platser</Eyebrow>
+          <Heading style={styles.center}>Från domkyrkan till festen</Heading>
         </Reveal>
         <View {...css('row-md', 'gap-lg-md')} style={styles.stack}>
           {places.map(({ venue, photo, number, tokens }, index) => (
@@ -148,7 +148,7 @@ function TwoPlaces() {
           ))}
         </View>
         <Reveal style={styles.centerRow}>
-          <Btn label="See the venues" href="/venues" variant="line" arrow center />
+          <Btn label="Se platserna" href="/venues" variant="line" arrow center />
         </Reveal>
       </Container>
     </View>
@@ -165,7 +165,7 @@ function StoryTeaser() {
           </View>
           <View {...css('fill-md', 'center-v-md')} style={styles.storyText}>
             <Reveal>
-              <Eyebrow>Our story</Eyebrow>
+              <Eyebrow>Vår historia</Eyebrow>
             </Reveal>
             <Reveal delay={100}>
               <Heading>
@@ -174,7 +174,7 @@ function StoryTeaser() {
             </Reveal>
             <Reveal delay={200}>
               <Link href="/our-story" {...css('text-link')} style={styles.storyLink}>
-                Read how it all began
+                Läs hur allt började
               </Link>
             </Reveal>
           </View>
@@ -194,9 +194,9 @@ function Closing() {
           <Script style={styles.closingScript}>{home.closingHeading}</Script>
           <Lead style={styles.closingBody}>{home.closingBody}</Lead>
           <Text style={styles.closingDeadline}>
-            Please reply by: <C v={wedding.rsvp.deadline} />
+            OSA senast: <C v={wedding.rsvp.deadline} />
           </Text>
-          <Btn label="RSVP" href="/rsvp" variant="light" arrow center />
+          <Btn label="OSA" href="/rsvp" variant="light" arrow center />
         </Reveal>
       </Container>
     </View>

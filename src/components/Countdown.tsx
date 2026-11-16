@@ -6,6 +6,7 @@ import { colors, css, fonts } from '@/theme';
 import { Eyebrow } from './Type';
 
 const units = ['days', 'hours', 'minutes', 'seconds'] as const;
+const unitLabels: Record<(typeof units)[number], string> = { days: 'dagar', hours: 'timmar', minutes: 'minuter', seconds: 'sekunder' };
 
 export function Countdown() {
   const iso = wedding.date.iso;
@@ -21,12 +22,12 @@ export function Countdown() {
   }, [iso]);
 
   if (left?.done) {
-    return <Text style={styles.message}>Today is the day.</Text>;
+    return <Text style={styles.message}>Idag är dagen.</Text>;
   }
 
   return (
     <View>
-      <View style={styles.row} role="timer" aria-label="Time until the wedding">
+      <View style={styles.row} role="timer" aria-label="Tid kvar till bröllopet">
         {units.map((unit, index) => {
           const value = left ? String(left[unit]).padStart(unit === 'days' ? 1 : 2, '0') : '–';
           return (
@@ -34,12 +35,12 @@ export function Countdown() {
               <Text key={value} {...css('t-numeral', !!left && unit === 'seconds' && 'tick')} style={styles.number} {...{ 'aria-hidden': unit === 'seconds' }}>
                 {value}
               </Text>
-              <Eyebrow style={styles.label}>{unit}</Eyebrow>
+              <Eyebrow style={styles.label}>{unitLabels[unit]}</Eyebrow>
             </View>
           );
         })}
       </View>
-      {iso ? null : <Text style={styles.waiting}>The countdown begins once our date is announced.</Text>}
+      {iso ? null : <Text style={styles.waiting}>Nedräkningen börjar när vårt datum är bestämt.</Text>}
     </View>
   );
 }

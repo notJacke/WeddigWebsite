@@ -17,8 +17,8 @@ export function Footer() {
         <View style={styles.notice} {...{ dataSet: { previewNotice: '' } }}>
           <Container>
             <Text style={styles.noticeText}>
-              <Text style={styles.noticeStrong}>Preview. </Text>
-              Details with a <Text style={styles.noticeMark}>dotted underline</Text>, and anything labelled “sample”, are placeholders and not confirmed.
+              <Text style={styles.noticeStrong}>Förhandsvisning. </Text>
+              Uppgifter med <Text style={styles.noticeMark}>prickad understrykning</Text>, och allt som är märkt ”exempel”, är platshållare och inte bekräftade.
             </Text>
           </Container>
         </View>
@@ -33,14 +33,14 @@ export function Footer() {
             <C v={weddingDate()} />  ·  {wedding.location}
           </Text>
           <View {...css('row-md')} style={styles.links}>
-            {[...navItems, { label: 'RSVP', href: '/rsvp' as const }].map((item) => (
+            {[...navItems, { label: 'OSA', href: '/rsvp' as const }].map((item) => (
               <Link key={item.label} href={item.href} {...css('text-link')} style={styles.link}>
                 {item.label}
               </Link>
             ))}
           </View>
           <Link href="/credits" {...css('text-link')} style={styles.credit}>
-            Photo credits
+            Fotografer
           </Link>
         </Container>
       </View>

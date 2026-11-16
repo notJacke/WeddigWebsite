@@ -4,10 +4,10 @@ import { coupleNames, wedding } from '@/content/wedding';
 const siteUrl = (process.env.EXPO_PUBLIC_SITE_URL ?? 'https://example.com').replace(/\/$/, '');
 
 export function pageMetadata(page: string | null, description: string, path: string): Metadata {
-  const site = `${coupleNames()} | Our Wedding`;
+  const site = `${coupleNames()} | Vårt bröllop`;
   const title = page ? `${page} | ${coupleNames()}` : site;
   const url = `${siteUrl}${path}`;
-  const image = { url: `${siteUrl}/og-image.jpg`, width: 1200, height: 630, alt: `${coupleNames()}, Karlstad, Sweden` };
+  const image = { url: `${siteUrl}/og-image.jpg`, width: 1200, height: 630, alt: `${coupleNames()}, Karlstad` };
   return {
     title,
     description,

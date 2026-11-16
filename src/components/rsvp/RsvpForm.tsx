@@ -12,9 +12,9 @@ const { maxGuests, foodOptions, privacy } = wedding.rsvp;
 const contact = copyText(wedding.details.contact.email);
 
 const failureMessages: Partial<Record<SubmitResult, string>> = {
-  already_responded: `We already have a reply from this email address. If something has changed, please write to us at ${contact}.`,
-  not_configured: 'The RSVP form is not connected yet, so your reply was not saved.',
-  failed: 'We could not send your reply. Your answers are still here, so please check your connection and try again.',
+  already_responded: `Vi har redan fått ett svar från den här e-postadressen. Om något har ändrats, skriv till oss på ${contact}.`,
+  not_configured: 'OSA-formuläret är inte kopplat ännu, så ditt svar sparades inte.',
+  failed: 'Vi kunde inte skicka ditt svar. Dina svar finns kvar, så kontrollera din anslutning och försök igen.',
 };
 
 export function RsvpForm({ onSent }: { onSent: () => void }) {
@@ -70,10 +70,10 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
   const sending = status === 'sending';
 
   return (
-    <View role="form" aria-label="RSVP" style={styles.form}>
+    <View role="form" aria-label="OSA" style={styles.form}>
       <Field
         id="full-name"
-        label="Your full name"
+        label="Ditt för- och efternamn"
         required
         inputRef={nameRef}
         value={form.fullName}
@@ -84,7 +84,7 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
       />
       <Field
         id="email"
-        label="Email address"
+        label="E-postadress"
         required
         inputRef={emailRef}
         value={form.email}
@@ -99,23 +99,23 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
 
       <View style={styles.group}>
         <Text nativeID="attending-label" style={styles.groupLabel}>
-          Will you attend?
+          Kommer du?
         </Text>
         <View role="group" aria-labelledby="attending-label" {...css('row-md')} style={styles.choices}>
-          <Choice large label="Yes, happily!" selected={form.attending === true} onPress={() => update({ attending: true }, 'attending')} />
-          <Choice large label="Unfortunately, I cannot attend" selected={form.attending === false} onPress={() => update({ attending: false }, 'attending')} />
+          <Choice large label="Ja, gärna!" selected={form.attending === true} onPress={() => update({ attending: true }, 'attending')} />
+          <Choice large label="Tyvärr kan jag inte komma" selected={form.attending === false} onPress={() => update({ attending: false }, 'attending')} />
         </View>
         <FieldError message={errors.attending} />
       </View>
 
       {form.attending ? (
         <View {...css('rise')} style={styles.form}>
-          <Stepper label="Number of guests, including you" value={form.guestCount} min={1} max={maxGuests} onChange={(guestCount) => update({ guestCount })} />
+          <Stepper label="Antal gäster, inklusive dig" value={form.guestCount} min={1} max={maxGuests} onChange={(guestCount) => update({ guestCount })} />
           {Array.from({ length: form.guestCount - 1 }, (_, index) => (
             <Field
               key={index}
               id={`guest-${index}`}
-              label={`Name of guest ${index + 2}`}
+              label={`Namn på gäst ${index + 2}`}
               required
               value={form.guestNames[index] ?? ''}
               onChangeText={(name) => setGuestName(index, name)}
@@ -125,8 +125,8 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
           ))}
           <Field
             id="dietary"
-            label="Dietary requirements and allergies"
-            hint="For everyone in your party. Leave blank if there are none."
+            label="Specialkost och allergier"
+            hint="För alla i ditt sällskap. Lämna tomt om det inte finns några."
             multiline
             value={form.dietary}
             onChangeText={(dietary) => update({ dietary })}
@@ -135,7 +135,7 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
           {foodOptions.length ? (
             <View style={styles.group}>
               <Text nativeID="food-label" style={styles.groupLabel}>
-                Food preference
+                Matpreferens
               </Text>
               <View role="group" aria-labelledby="food-label" style={styles.chips}>
                 {foodOptions.map((option) => (
@@ -144,11 +144,11 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
               </View>
             </View>
           ) : null}
-          <Field id="song" label="A song that will get you dancing" hint="Optional" value={form.song} onChangeText={(song) => update({ song })} maxLength={300} />
+          <Field id="song" label="En låt som får dig att dansa" hint="Valfritt" value={form.song} onChangeText={(song) => update({ song })} maxLength={300} />
           <Field
             id="special"
-            label="Anything else we should know?"
-            hint="Optional. For example, accessibility needs."
+            label="Något mer vi borde veta?"
+            hint="Valfritt. Till exempel behov av tillgänglighet."
             multiline
             value={form.special}
             onChangeText={(special) => update({ special })}
@@ -159,8 +159,8 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
 
       <Field
         id="comments"
-        label={form.attending === false ? 'A message for us' : 'Comments or a message for us'}
-        hint="Optional"
+        label={form.attending === false ? 'Ett meddelande till oss' : 'Kommentarer eller ett meddelande till oss'}
+        hint="Valfritt"
         multiline
         value={form.comments}
         onChangeText={(comments) => update({ comments })}
@@ -174,10 +174,10 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
           </Text>
         ) : hasErrors ? (
           <Text role="alert" style={styles.failure}>
-            Please check the highlighted answers above.
+            Kontrollera de markerade svaren ovan.
           </Text>
         ) : null}
-        <Btn center label={sending ? 'Sending your reply…' : 'Send reply'} onPress={submit} disabled={sending} busy={sending} />
+        <Btn center label={sending ? 'Skickar ditt svar…' : 'Skicka svar'} onPress={submit} disabled={sending} busy={sending} />
         <Text style={styles.privacy}>{privacy}</Text>
       </View>
     </View>
@@ -196,15 +196,15 @@ function Success({ form }: { form: FormState }) {
 
   return (
     <View ref={ref} tabIndex={-1} role="status" {...css('rise')} style={styles.success}>
-      <Script>{form.attending ? 'Hooray!' : 'Thank you'}</Script>
+      <Script>{form.attending ? 'Hurra!' : 'Tack'}</Script>
       <Heading level={2} style={styles.center}>
-        {form.attending ? `Thank you for your response, ${firstName}!` : `Thank you for letting us know, ${firstName}.`}
+        {form.attending ? `Tack för ditt svar, ${firstName}!` : `Tack för att du hörde av dig, ${firstName}.`}
       </Heading>
       <Flourish />
       <Lead style={styles.center}>
-        {form.attending ? 'We can’t wait to celebrate with you.' : 'You will be missed, and we will be thinking of you on the day.'}
+        {form.attending ? 'Vi längtar efter att fira med dig.' : 'Vi kommer att sakna dig och tänka på dig under dagen.'}
       </Lead>
-      {form.attending ? <Btn center label="See the wedding details" href="/details" variant="line" arrow /> : <Btn center label="Back to home" href="/" variant="line" />}
+      {form.attending ? <Btn center label="Se information om dagen" href="/details" variant="line" arrow /> : <Btn center label="Till startsidan" href="/" variant="line" />}
     </View>
   );
 }

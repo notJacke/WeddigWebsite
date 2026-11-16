@@ -19,7 +19,7 @@ export function SampleBadge() {
   if (!wedding.site.previewMode) return null;
   return (
     <View style={styles.badge} {...{ dataSet: { tbcTag: '' } }}>
-      <Text style={styles.badgeText}>Sample photo</Text>
+      <Text style={styles.badgeText}>Exempelfoto</Text>
     </View>
   );
 }

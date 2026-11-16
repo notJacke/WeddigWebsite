@@ -20,7 +20,7 @@ export function Field({ id, label, hint, error, required, inputRef, multiline, s
     <View style={styles.field}>
       <Text nativeID={labelId} style={styles.label} onPress={() => inputRef?.current?.focus()}>
         {label}
-        {required ? <Text style={styles.required}> (required)</Text> : null}
+        {required ? <Text style={styles.required}> (obligatoriskt)</Text> : null}
       </Text>
       <TextInput
         ref={inputRef}
@@ -80,11 +80,11 @@ export function Stepper({ label, value, min, max, onChange }: { label: string; v
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.stepRow}>
-        {button('−', 'One guest fewer', value - 1, value <= min)}
+        {button('−', 'En gäst färre', value - 1, value <= min)}
         <Text aria-live="polite" style={styles.stepValue}>
           {value}
         </Text>
-        {button('+', 'One guest more', value + 1, value >= max)}
+        {button('+', 'En gäst till', value + 1, value >= max)}
       </View>
     </View>
   );
