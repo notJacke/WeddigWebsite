@@ -1,5 +1,6 @@
 import type { ComponentRef, RefObject } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View, type TextInputProps } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { colors, css, fonts } from '@/theme';
 
 type FieldProps = TextInputProps & {
@@ -70,23 +71,22 @@ export function Choice({ label, selected, onPress, large }: { label: string; sel
   );
 }
 
-export function Stepper({ label, value, min, max, onChange }: { label: string; value: number; min: number; max: number; onChange: (next: number) => void }) {
-  const button = (text: string, aria: string, next: number, disabled: boolean) => (
-    <Pressable role="button" aria-label={aria} disabled={disabled} onPress={() => onChange(next)} {...css('choice')} style={[styles.stepBtn, disabled && styles.stepOff]}>
-      <Text style={styles.stepSign}>{text}</Text>
-    </Pressable>
-  );
+/** A real checkbox for keyboards and screen readers, with an optional hint under the label. */
+export function Checkbox({ label, hint, checked, onChange }: { label: string; hint?: string; checked: boolean; onChange: (next: boolean) => void }) {
   return (
-    <View style={styles.field}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.stepRow}>
-        {button('−', 'En gäst färre', value - 1, value <= min)}
-        <Text aria-live="polite" style={styles.stepValue}>
-          {value}
-        </Text>
-        {button('+', 'En gäst till', value + 1, value >= max)}
+    <Pressable role="checkbox" aria-checked={checked} onPress={() => onChange(!checked)} {...css('choice')} style={styles.check}>
+      <View style={[styles.checkBox, checked && styles.checkBoxOn]}>
+        {checked ? (
+          <Svg width={14} height={14} viewBox="0 0 14 14" fill="none" aria-hidden>
+            <Path d="M2 7.5 5.5 11 12 3.5" stroke={colors.ivory} strokeWidth={1.6} />
+          </Svg>
+        ) : null}
       </View>
-    </View>
+      <View style={styles.checkText}>
+        <Text style={styles.checkLabel}>{label}</Text>
+        {hint ? <Text style={styles.hint}>{hint}</Text> : null}
+      </View>
+    </Pressable>
   );
 }
 
@@ -114,9 +114,9 @@ const styles = StyleSheet.create({
   choiceText: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.charcoal },
   choiceTextLarge: { fontFamily: fonts.serifItalic, fontSize: 24, lineHeight: 30, color: colors.charcoal, textAlign: 'center' },
   choiceTextOn: { color: colors.ivory },
-  stepRow: { flexDirection: 'row', alignItems: 'center', gap: 18, marginTop: 4 },
-  stepBtn: { width: 48, height: 48, borderWidth: 1, borderColor: colors.taupe, alignItems: 'center', justifyContent: 'center' },
-  stepOff: { opacity: 0.35 },
-  stepSign: { fontFamily: fonts.sans, fontSize: 22, lineHeight: 26, color: colors.charcoal },
-  stepValue: { fontFamily: fonts.serif, fontSize: 34, lineHeight: 40, minWidth: 34, textAlign: 'center', color: colors.charcoal },
+  check: { flexDirection: 'row', alignItems: 'flex-start', gap: 14, borderWidth: 1, borderColor: colors.taupe, paddingVertical: 16, paddingHorizontal: 18 },
+  checkBox: { width: 24, height: 24, marginTop: 1, borderWidth: 1, borderColor: colors.taupe, alignItems: 'center', justifyContent: 'center' },
+  checkBoxOn: { backgroundColor: colors.sageDeep, borderColor: colors.sageDeep },
+  checkText: { flex: 1, gap: 2 },
+  checkLabel: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 24, color: colors.charcoal },
 });

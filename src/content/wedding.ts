@@ -197,8 +197,6 @@ export const wedding = {
   rsvp: {
     deadline: tbc('Svarsdatum meddelas senare'),
     intro: 'Låt oss veta om du kan komma. Ett svar kan gälla hela ditt sällskap.',
-    /** Largest party one reply can cover, including the person replying (20 at most). */
-    maxGuests: 6,
     /** Leave the array empty to hide the food preference question. */
     foodOptions: ['Inga önskemål', 'Vegetarisk', 'Vegansk', 'Pescetarian'],
     privacy: 'Vi använder bara dina svar för att planera vårt bröllop.',

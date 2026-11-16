@@ -26,6 +26,8 @@ const columns = [
   ['Guest names', 'guest_names'],
   ['Dietary requirements', 'dietary_requirements'],
   ['Food preference', 'food_preference'],
+  ['Guest dietary requirements', 'guest_dietary_requirements'],
+  ['Guest food preference', 'guest_food_preference'],
   ['Song request', 'song_request'],
   ['Special information', 'special_information'],
   ['Comments', 'comments'],

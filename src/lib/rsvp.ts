@@ -2,10 +2,13 @@ export type RsvpForm = {
   fullName: string;
   email: string;
   attending: boolean | null;
-  guestCount: number;
-  guestNames: string[];
   dietary: string;
   food: string;
+  /** Whether the person replying is also signing up one more invited guest. */
+  withGuest: boolean;
+  guestName: string;
+  guestDietary: string;
+  guestFood: string;
   comments: string;
   song: string;
   special: string;
@@ -15,16 +18,18 @@ export const emptyForm: RsvpForm = {
   fullName: '',
   email: '',
   attending: null,
-  guestCount: 1,
-  guestNames: [],
   dietary: '',
   food: '',
+  withGuest: false,
+  guestName: '',
+  guestDietary: '',
+  guestFood: '',
   comments: '',
   song: '',
   special: '',
 };
 
-export type FormErrors = Partial<Record<'fullName' | 'email' | 'attending' | `guest${number}`, string>>;
+export type FormErrors = Partial<Record<'fullName' | 'email' | 'attending' | 'guestName', string>>;
 
 export function validate(form: RsvpForm): FormErrors {
   const errors: FormErrors = {};
@@ -32,11 +37,7 @@ export function validate(form: RsvpForm): FormErrors {
   if (!form.email.trim()) errors.email = 'Fyll i din e-postadress.';
   else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) errors.email = 'E-postadressen ser inte riktigt rätt ut.';
   if (form.attending === null) errors.attending = 'Berätta om du kan komma.';
-  if (form.attending) {
-    for (let i = 0; i < form.guestCount - 1; i++) {
-      if (!form.guestNames[i]?.trim()) errors[`guest${i}`] = 'Fyll i gästens namn.';
-    }
-  }
+  if (form.attending && form.withGuest && !form.guestName.trim()) errors.guestName = 'Fyll i personens namn.';
   return errors;
 }
 
@@ -60,6 +61,7 @@ export function newSubmissionId(): string {
  */
 export async function submitRsvp(form: RsvpForm, submissionId: string): Promise<SubmitResult> {
   if (!url || !key) return 'not_configured';
+  const withGuest = !!form.attending && form.withGuest;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15000);
@@ -78,10 +80,12 @@ export async function submitRsvp(form: RsvpForm, submissionId: string): Promise<
         p_full_name: form.fullName,
         p_email: form.email,
         p_attending: form.attending,
-        p_guest_count: form.attending ? form.guestCount : 0,
-        p_guest_names: form.attending ? form.guestNames.slice(0, form.guestCount - 1).map((n) => n.trim()) : [],
+        p_guest_count: form.attending ? (withGuest ? 2 : 1) : 0,
+        p_guest_names: withGuest ? [form.guestName.trim()] : [],
         p_dietary_requirements: form.attending ? form.dietary : '',
         p_food_preference: form.attending ? form.food : '',
+        p_guest_dietary_requirements: withGuest ? form.guestDietary : '',
+        p_guest_food_preference: withGuest ? form.guestFood : '',
         p_comments: form.comments,
         p_song_request: form.attending ? form.song : '',
         p_special_information: form.attending ? form.special : '',

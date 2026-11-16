@@ -6,9 +6,9 @@ import { Heading, Lead, Script } from '@/components/Type';
 import { copyText, wedding } from '@/content/wedding';
 import { emptyForm, newSubmissionId, submitRsvp, validate, type FormErrors, type RsvpForm as FormState, type SubmitResult } from '@/lib/rsvp';
 import { colors, css, fonts } from '@/theme';
-import { Choice, Field, FieldError, Stepper } from './Fields';
+import { Checkbox, Choice, Field, FieldError } from './Fields';
 
-const { maxGuests, foodOptions, privacy } = wedding.rsvp;
+const { foodOptions, privacy } = wedding.rsvp;
 const contact = copyText(wedding.details.contact.email);
 
 const failureMessages: Partial<Record<SubmitResult, string>> = {
@@ -24,6 +24,7 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
   const [failure, setFailure] = useState<SubmitResult | null>(null);
   const nameRef = useRef<ComponentRef<typeof TextInput>>(null);
   const emailRef = useRef<ComponentRef<typeof TextInput>>(null);
+  const guestRef = useRef<ComponentRef<typeof TextInput>>(null);
   // Reused across retries, so a reply that reached the database is never stored twice.
   const submissionId = useRef<string | null>(null);
   const inFlight = useRef(false);
@@ -34,12 +35,6 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
     if (clear) setErrors((current) => ({ ...current, [clear]: undefined }));
   };
 
-  const setGuestName = (index: number, name: string) => {
-    const guestNames = [...form.guestNames];
-    guestNames[index] = name;
-    update({ guestNames }, `guest${index}`);
-  };
-
   const submit = async () => {
     if (inFlight.current) return;
     const found = validate(form);
@@ -47,6 +42,7 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
     if (Object.keys(found).length) {
       if (found.fullName) nameRef.current?.focus();
       else if (found.email) emailRef.current?.focus();
+      else if (found.guestName) guestRef.current?.focus();
       return;
     }
     inFlight.current = true;
@@ -110,40 +106,52 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
 
       {form.attending ? (
         <View {...css('rise')} style={styles.form}>
-          <Stepper label="Antal gäster, inklusive dig" value={form.guestCount} min={1} max={maxGuests} onChange={(guestCount) => update({ guestCount })} />
-          {Array.from({ length: form.guestCount - 1 }, (_, index) => (
-            <Field
-              key={index}
-              id={`guest-${index}`}
-              label={`Namn på gäst ${index + 2}`}
-              required
-              value={form.guestNames[index] ?? ''}
-              onChangeText={(name) => setGuestName(index, name)}
-              error={errors[`guest${index}`]}
-              maxLength={200}
-            />
-          ))}
           <Field
             id="dietary"
             label="Specialkost och allergier"
-            hint="För alla i ditt sällskap. Lämna tomt om det inte finns några."
+            hint="Lämna tomt om du inte har några."
             multiline
             value={form.dietary}
             onChangeText={(dietary) => update({ dietary })}
             maxLength={2000}
           />
-          {foodOptions.length ? (
-            <View style={styles.group}>
-              <Text nativeID="food-label" style={styles.groupLabel}>
-                Matpreferens
+          <FoodChoice id="food" value={form.food} onChange={(food) => update({ food })} />
+
+          <Checkbox
+            label="Jag anmäler även en person till"
+            hint="Endast för någon som också är inbjuden."
+            checked={form.withGuest}
+            onChange={(withGuest) => update({ withGuest }, 'guestName')}
+          />
+
+          {form.withGuest ? (
+            <View role="group" aria-labelledby="guest-heading" {...css('rise')} style={styles.guest}>
+              <Text nativeID="guest-heading" role="heading" aria-level={3} style={styles.guestHeading}>
+                Person 2
               </Text>
-              <View role="group" aria-labelledby="food-label" style={styles.chips}>
-                {foodOptions.map((option) => (
-                  <Choice key={option} label={option} selected={form.food === option} onPress={() => update({ food: form.food === option ? '' : option })} />
-                ))}
-              </View>
+              <Field
+                id="guest-name"
+                label="För- och efternamn"
+                required
+                inputRef={guestRef}
+                value={form.guestName}
+                onChangeText={(guestName) => update({ guestName }, 'guestName')}
+                error={errors.guestName}
+                maxLength={200}
+              />
+              <Field
+                id="guest-dietary"
+                label="Specialkost och allergier"
+                hint="Lämna tomt om personen inte har några."
+                multiline
+                value={form.guestDietary}
+                onChangeText={(guestDietary) => update({ guestDietary })}
+                maxLength={2000}
+              />
+              <FoodChoice id="guest-food" value={form.guestFood} onChange={(guestFood) => update({ guestFood })} />
             </View>
           ) : null}
+
           <Field id="song" label="En låt som får dig att dansa" hint="Valfritt" value={form.song} onChangeText={(song) => update({ song })} maxLength={300} />
           <Field
             id="special"
@@ -184,9 +192,26 @@ export function RsvpForm({ onSent }: { onSent: () => void }) {
   );
 }
 
+function FoodChoice({ id, value, onChange }: { id: string; value: string; onChange: (next: string) => void }) {
+  if (!foodOptions.length) return null;
+  return (
+    <View style={styles.group}>
+      <Text nativeID={`${id}-label`} style={styles.groupLabel}>
+        Matpreferens
+      </Text>
+      <View role="group" aria-labelledby={`${id}-label`} style={styles.chips}>
+        {foodOptions.map((option) => (
+          <Choice key={option} label={option} selected={value === option} onPress={() => onChange(value === option ? '' : option)} />
+        ))}
+      </View>
+    </View>
+  );
+}
+
 function Success({ form }: { form: FormState }) {
   const ref = useRef<ComponentRef<typeof View>>(null);
   const firstName = form.fullName.trim().split(/\s+/)[0];
+  const together = form.attending && form.withGuest;
 
   useEffect(() => {
     if (Platform.OS !== 'web') return;
@@ -202,7 +227,7 @@ function Success({ form }: { form: FormState }) {
       </Heading>
       <Flourish />
       <Lead style={styles.center}>
-        {form.attending ? 'Vi längtar efter att fira med dig.' : 'Vi kommer att sakna dig och tänka på dig under dagen.'}
+        {form.attending ? (together ? 'Vi längtar efter att fira med er.' : 'Vi längtar efter att fira med dig.') : 'Vi kommer att sakna dig och tänka på dig under dagen.'}
       </Lead>
       {form.attending ? <Btn center label="Se information om dagen" href="/details" variant="line" arrow /> : <Btn center label="Till startsidan" href="/" variant="line" />}
     </View>
@@ -215,6 +240,8 @@ const styles = StyleSheet.create({
   groupLabel: { fontFamily: fonts.sansMedium, fontSize: 14, lineHeight: 22, color: colors.charcoal },
   choices: { gap: 10 },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  guest: { gap: 30, borderLeftWidth: 1, borderLeftColor: colors.gold, paddingLeft: 20 },
+  guestHeading: { fontFamily: fonts.serifItalic, fontSize: 26, lineHeight: 32, color: colors.charcoal },
   footer: { alignItems: 'center', gap: 16, marginTop: 6 },
   failure: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.error, textAlign: 'center' },
   privacy: { fontFamily: fonts.sans, fontSize: 13, lineHeight: 20, color: colors.taupeDeep, textAlign: 'center' },
